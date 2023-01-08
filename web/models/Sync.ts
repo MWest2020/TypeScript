@@ -1,8 +1,8 @@
 import axios, { AxiosPromise } from 'axios';
 
-// interface HasId {
-//   id: number;
-// }
+interface HasId {
+  id?: number;
+}
 
 export class Sync<T extends HasId> {
   constructor(public rootUrl: string) {}
@@ -11,8 +11,9 @@ export class Sync<T extends HasId> {
     return axios.get(`${this.rootUrl}/${id}`);
   }
 
-  save(id: number, data: T): AxiosPromise {
-    if (!id) {
+  save(data: T): AxiosPromise {
+    const { id } = data;
+    if (id == undefined) {
       return axios.post(`${this.rootUrl}`, data);
     } else {
       return axios.put(`${this.rootUrl}/${id}`, data);
